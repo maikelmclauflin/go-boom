@@ -29,10 +29,10 @@ func TestRecoverHandlerPanic(t *testing.T) {
 	}
 
 	if res != nil {
-		defer res.Body.Close()
+		defer func() { _ = res.Body.Close() }()
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, _ := ioutil.ReadAll(res.Body)
 
 	if err := json.Unmarshal(body, &boomResponse); err != nil {
 		t.Errorf("response body was not valid JSON: %v", err)
@@ -55,7 +55,7 @@ func TestRecoverHandlerNoPanic(t *testing.T) {
 
 	fn := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		io.WriteString(w, "hello world!")
+		_, _ = io.WriteString(w, "hello world!")
 	})
 
 	handler := RecoverHandler(fn)
@@ -70,10 +70,10 @@ func TestRecoverHandlerNoPanic(t *testing.T) {
 	}
 
 	if res != nil {
-		defer res.Body.Close()
+		defer func() { _ = res.Body.Close() }()
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, _ := ioutil.ReadAll(res.Body)
 
 	if string(body) != "hello world!" || res.StatusCode != 200 {
 		t.Fail()
@@ -96,10 +96,10 @@ func TestNotFoundHandler(t *testing.T) {
 	}
 
 	if res != nil {
-		defer res.Body.Close()
+		defer func() { _ = res.Body.Close() }()
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, _ := ioutil.ReadAll(res.Body)
 
 	if err := json.Unmarshal(body, &boomResponse); err != nil {
 		t.Errorf("response body was not valid JSON: %v", err)

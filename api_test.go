@@ -45,7 +45,7 @@ func TestUnathorized(t *testing.T) {
 
 	var boomResponse Err
 
-	RenderUnathorized(rr, message)
+	RenderUnauthorized(rr, message)
 
 	if err := json.Unmarshal(rr.Body.Bytes(), &boomResponse); err != nil {
 		t.Errorf("response body was not valid JSON: %v", err)

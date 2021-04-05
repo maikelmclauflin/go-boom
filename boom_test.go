@@ -18,7 +18,7 @@ func TestBoomDefault(t *testing.T) {
 
 	var boomResponse Err
 	statusCode := 404
-	errorType := codes[statusCode]
+	errorType := http.StatusText(statusCode)
 	message := errorType
 
 	renderBoom(rr, statusCode)
@@ -41,7 +41,7 @@ func TestBoomCustomMessage(t *testing.T) {
 
 	var boomResponse Err
 	statusCode := 404
-	errorType := codes[statusCode]
+	errorType := http.StatusText(statusCode)
 	message := "This is a test message"
 
 	renderBoom(rr, statusCode, message)
@@ -64,7 +64,7 @@ func TestBoomCustomErrorMessage(t *testing.T) {
 
 	var boomResponse Err
 	statusCode := 404
-	errorType := codes[statusCode]
+	errorType := http.StatusText(statusCode)
 	message := errors.New("This is a message of type error")
 
 	renderBoom(rr, statusCode, message)
@@ -87,7 +87,7 @@ func TestBoomHandlesMultipleMessagesWithNoFailure(t *testing.T) {
 
 	var boomResponse Err
 	statusCode := 404
-	// errorType := codes[statusCode]
+	// errorType := http.StatusText(statusCode)
 	m1 := "This is a test message"
 	m2 := "This is another test message"
 	m3 := "This is a third test message"
